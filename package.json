@@ -1,0 +1,7 @@
+{
+  "name": "CircleCI-E",
+  "private": true,
+  "scripts": {
+    "test": "node index.js"
+  }
+}
