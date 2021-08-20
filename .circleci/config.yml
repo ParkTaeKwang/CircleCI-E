@@ -35,18 +35,25 @@ jobs:
     executor: docker/machine
     steps:
      - checkout
-
      - node/with-cache:
         steps:
         - run: npm install
      - run: docker build -t circleci/example .
      - run: docker save -o circleci-example.tar circleci/example
+     - add_ssh_keys:
+        fingerprints:
+         - "48:79:44:ed:ac:8e:a6:fb:fd:d9:4d:da:9d:c4:41:b4"
 
+     - run: rsync -ah -e "ssh -o StrictHostKeyChecking=no" circleci-example.tar root@3.34.142.64:/path/to/send       
+     - run: ssh root@3.34.142.64 "cd /path/to/send; docker load -i circleci-example.tar; docker run circleci/example"
 
 # build-and-test라는 workflow에는 build-and-test라는 Job을 가지고 있다는 의미입니다.
 workflows:
     build-and-test:
       jobs:
         - build-and-test 
-
+        - docker:
+            filters:
+               branches:
+                 only: master
                  
