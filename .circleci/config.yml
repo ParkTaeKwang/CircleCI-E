@@ -1,8 +1,12 @@
+# CircleCI 2.1 버전을 사용한다는 의미입니다.
+# 각 버전에 따라 사용할 수 있는 속성이 다릅니다.
 version: 2.1
 
 # `node`라는 이름으로 `circleci/node@1.1.6` Orb를 사용한다는 의미입니다.
 orbs:
   node: circleci/node@1.1.6
+  docker: circleci/docker@1.0.0
+
 
 # `build-and-test`라는 이름을 가진 Job의 속성을 나열합니다.
 jobs:
@@ -27,9 +31,22 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+  docker:
+    executor: docker/machine
+    steps:
+     - checkout
+
+     - node/with-cache:
+        steps:
+        - run: npm install
+     - run: docker build -t circleci/example .
+     - run: docker save -o circleci-example.tar circleci/example
+
 
 # build-and-test라는 workflow에는 build-and-test라는 Job을 가지고 있다는 의미입니다.
 workflows:
     build-and-test:
       jobs:
         - build-and-test 
+
+                 
