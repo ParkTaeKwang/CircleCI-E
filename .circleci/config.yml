@@ -1,0 +1,37 @@
+# CircleCI 2.1 버전을 사용한다는 의미입니다.
+# 각 버전에 따라 사용할 수 있는 속성이 다릅니다.
+version: 2.1
+
+# `node`라는 이름으로 `circleci/node@1.1.6` Orb를 사용한다는 의미입니다.
+orbs:
+  node: circleci/node@1.1.6
+
+# `build-and-test`라는 이름을 가진 Job의 속성을 나열합니다.
+jobs:
+  build-and-test:
+
+    # 이 Job의 executor는 node Orb의 default executor 입니다.
+    executor:
+      name: node/default
+    
+    # 이 Job에서 수행할 명령어 모음입니다.
+    steps:
+
+      # 이 프로젝트 코드를 executor에 다운로드 합니다.
+      - checkout
+
+      # node Orb의 with-cache 명령어 입니다.
+      # node_modules 폴더를 package.json을 키로 가지는 캐시에 생성합니다.
+      - node/with-cache:
+
+          # 캐싱되어 있던 node_modules 폴더를 불러 온 후 실행할 명령어를 입력합니다.
+          # 이 steps가 끝난 후의 node_modules를 캐시에 저장합니다.
+          steps:
+            - run: npm install
+            - run: npm test
+
+# build-and-test라는 workflow에는 build-and-test라는 Job을 가지고 있다는 의미입니다.
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test 
