@@ -42,7 +42,7 @@ jobs:
      - run: docker save -o circleci-example.tar circleci/example
      - add_ssh_keys:
         fingerprints:
-         - "48:79:44:ed:ac:8e:a6:fb:fd:d9:4d:da:9d:c4:41:b4"
+         - "36:8b:de:1e:ca:53:bc:67:f6:c1:36:14:7c:7e:bf:9f"
 
      - run: rsync -ah -e "ssh -o StrictHostKeyChecking=no" circleci-example.tar root@3.34.142.64:/path/to/send       
      - run: ssh root@3.34.142.64 "cd /path/to/send; docker load -i circleci-example.tar; docker run circleci/example"
