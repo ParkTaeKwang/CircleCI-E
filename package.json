@@ -3,6 +3,6 @@
   "private": true,
   "scripts": {
     "test": "node index.js",
-    "build": "npm run build"
+    "build": "npm install"
   }
 }
