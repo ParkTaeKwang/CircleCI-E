@@ -2,6 +2,7 @@
   "name": "CircleCI-E",
   "private": true,
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "build": "npm run build"
   }
 }
